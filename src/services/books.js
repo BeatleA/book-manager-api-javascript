@@ -6,7 +6,7 @@ const getBooks = async () => {
 
 const getBook = async (bookId) => {
   return Book.findOne({
-    where: {bookId},
+    where: { bookId },
   });
 };
 
@@ -23,9 +23,16 @@ const updateBook = async (bookId, book) => {
   });
 };
 
+const deleteBook = async (bookId) => {
+  return Book.destroy({
+    where: { bookId },
+  });
+};
+
 module.exports = {
   getBooks,
   getBook,
   saveBook,
   updateBook, // User Story 4 - Update Book By Id Solution
+  deleteBook,
 };
