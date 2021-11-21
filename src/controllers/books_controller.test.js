@@ -104,7 +104,22 @@ describe('POST /api/v1/books endpoint', () => {
       .send({ title: 'Fantastic Mr. Fox', author: 'Roald Dahl', }); // No bookId
 
     // Assert
-    expect(res.statusCode).toEqual(400);
+    expect(res.statusCode).toEqual(422);
+  });
+});
+
+describe('PUT /api/v1/books/{bookId} endpoint', () => {
+  test('status code successfully 204 for updating a valid book', async () => {
+    // Arrange
+    bookService.updateBook = jest.fn().mockReturnValue(dummyBookData[1]);
+
+    // Act
+    const res = await request(app).put('/api/v1/books/2')
+      .send({ bookId: 2, title: 'Fantastic Mr. Fox', author: 'Roald Dahl', });
+
+    // Assert
+    expect(res.statusCode).toEqual(204);
+    expect(bookService.updateBook).toHaveBeenCalledTimes(1);
   });
 });
 

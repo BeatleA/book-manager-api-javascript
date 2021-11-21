@@ -1,4 +1,4 @@
-const {bookService} = require('../services');
+const { bookService } = require('../services');
 
 const getBooks = async (req, res) => {
   const books = await bookService.getBooks();
@@ -22,8 +22,8 @@ const saveBook = async (req, res) => {
     const book = await bookService.saveBook(bookToBeSaved);
     res.status(201).json(book);
   }
-  catch(error) {
-    res.status(400).json({message: error.message});
+  catch (error) {
+    res.status(422).json({ message: error.message });
   }
 };
 
@@ -31,17 +31,22 @@ const saveBook = async (req, res) => {
 const updateBook = async (req, res) => {
   const bookUpdateData = req.body;
   const bookId = req.params.bookId;
-  const book = await bookService.updateBook(bookId, bookUpdateData);
-  res.status(204).json(book);
+  try {
+    const book = await bookService.updateBook(bookId, bookUpdateData);
+    res.status(204).json(book);
+  }
+  catch (error) {
+    res.status(422).json({ message: error.message });
+  }
 };
 
 const deleteBook = async (req, res) => {
   const bookId = req.params.bookId;
   const numberOfBooksDestroyed = await bookService.deleteBook(Number(bookId));
   if (numberOfBooksDestroyed === 1) {
-    res.status(204).json(numberOfBooksDestroyed);
+    res.status(204).json();
   } else {
-    res.status(404).json(numberOfBooksDestroyed);
+    res.status(404).json('Not found');
   }
 };
 
