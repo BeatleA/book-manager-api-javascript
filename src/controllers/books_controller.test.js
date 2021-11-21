@@ -109,15 +109,21 @@ describe('POST /api/v1/books endpoint', () => {
 });
 
 describe('DELETE /api/v1/books/{bookId} endpoint', () => {
-  test('status code successfully 200 for deleting a valid book', async () => {
+  test('status code successfully 204 for deleting a valid book', async () => {
+    // Arrange
+    bookService.deleteBook = jest.fn().mockResolvedValue(1);
+
     // Act
     const res = await request(app).delete('/api/v1/books/2');
 
     // Assert
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(204);
   });
 
   test('status code successfully 404 for a book that is not found', async () => {
+    // Arrange
+    bookService.deleteBook = jest.fn().mockResolvedValue(undefined);
+
     // Act
     const res = await request(app).delete('/api/v1/books/7');
 
